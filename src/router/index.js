@@ -24,6 +24,24 @@ const router = createRouter({
         component: () => import('@/views/DashboardView.vue'),
         },
 
+        {
+        path: '/glucose',
+        component: () => import('@/views/GlucoseView.vue'),
+        },
+
+        {
+        path: '/statistics',
+        component: () => import('@/views/StatisticsView.vue'),
+        },
+
+        {
+        path: '/profile',
+        component: () => import('@/views/ProfileView.vue'),
+        },
+
+
+
+
     ],
 })
 
