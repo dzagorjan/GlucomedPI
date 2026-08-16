@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { auth, db } from '@/firebase/config'
+import { auth, db, firebase } from '@/firebase/config'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -35,6 +35,74 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     clearError() {
       this.error = null
+    },
+
+    async registerUser({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+    }) {
+      this.loading = true
+      this.error = null
+
+    try {
+        const userCredential =
+          await auth.createUserWithEmailAndPassword(
+            email,
+            password,
+          )
+
+        const firebaseUser = userCredential.user
+
+        const userProfile = {
+          firstName,
+          lastName,
+          email,
+          role,
+          dateOfBirth: null,
+          doctorId: null,
+          createdAt:
+            firebase.firestore.FieldValue.serverTimestamp(),
+        }
+        await db
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .set(userProfile)
+
+        this.user = firebaseUser
+
+        this.userProfile = {
+          id: firebaseUser.uid,
+          ...userProfile,
+        }
+
+        return firebaseUser
+      } catch (error) {
+        console.error(
+          'Greška pri registraciji:',
+          error,
+        )
+
+        if (error.code === 'auth/email-already-in-use') {
+          this.error =
+            'Korisnik s ovom email adresom već postoji.'
+        } else if (error.code === 'auth/invalid-email') {
+          this.error =
+            'Email adresa nije ispravna.'
+        } else if (error.code === 'auth/weak-password') {
+          this.error =
+            'Lozinka mora sadržavati najmanje 6 znakova.'
+        } else {
+          this.error =
+            'Došlo je do greške pri registraciji.'
+        }
+
+        throw error
+      } finally {
+        this.loading = false
+      }
     },
 
     async loadUserProfile(userId) {

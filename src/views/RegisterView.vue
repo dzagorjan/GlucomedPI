@@ -1,9 +1,20 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
+import { useAuthStore } from '@/stores/authStore'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const {
+  loading,
+  error,
+} = storeToRefs(authStore)
 
 const firstName = ref('')
 const lastName = ref('')
@@ -12,15 +23,39 @@ const password = ref('')
 const confirmPassword = ref('')
 const role = ref('patient')
 
-function handleRegister() {
-  console.log('Registracija:', {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    role: role.value,
-  })
+const validationError = ref('')
+
+async function handleRegister() {
+  validationError.value = ''
+  authStore.clearError()
+
+  if (password.value !== confirmPassword.value) {
+    validationError.value =
+      'Lozinke se ne podudaraju.'
+
+    return
+  }
+
+  if (password.value.length < 6) {
+    validationError.value =
+      'Lozinka mora sadržavati najmanje 6 znakova.'
+
+    return
+  }
+
+  try {
+    await authStore.registerUser({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+      role: role.value,
+    })
+
+    router.push('/dashboard')
+  } catch {
+    
+  }
 }
 </script>
 
@@ -39,6 +74,13 @@ function handleRegister() {
         <p class="mt-1 text-sm text-gray-500">
           Kreirajte novi GlucoMed račun.
         </p>
+      </div>
+
+      <div
+        v-if="validationError || error"
+        class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+      >
+        {{ validationError || error }}
       </div>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -69,7 +111,7 @@ function handleRegister() {
         v-model="password"
         label="Lozinka"
         type="password"
-        placeholder="Unesite lozinku"
+        placeholder="Unesite lozinku - min 6 znakova"
         required
       />
 
@@ -104,8 +146,11 @@ function handleRegister() {
         </select>
       </div>
 
-      <BaseButton type="submit">
-        Registriraj se
+      <BaseButton 
+        type="submit" 
+        :disabled="loading"
+      >
+        {{ loading ? 'Registracija...' : 'Registriraj se' }}
       </BaseButton>
 
       <p class="text-center text-sm text-gray-600">
