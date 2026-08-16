@@ -1,18 +1,18 @@
 <script setup>
     defineProps({
         type:{
-            type:String,
-            default: 'button',
+          type:String,
+          default: 'button',
         },
 
         variant:{
-            type:String,
-            default:'primary',
+          type:String,
+          default:'primary',
         },
 
         disabled: {
-        type: Boolean,
-        default: false,
+          type: Boolean,
+          default: false,
   },
     })
 </script>
@@ -36,8 +36,6 @@
   >
     <slot />
   </button>
-
-
 </template>
 
 <style scoped>
