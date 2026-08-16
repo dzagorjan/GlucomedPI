@@ -1,19 +1,37 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
+import { useAuthStore } from '@/stores/authStore'
 
+const router = useRouter()
+const authStore = useAuthStore()
+
+const {
+  loading,
+  error,
+} = storeToRefs(authStore)
 
 const email = ref('')
 const password = ref('')
 
-function handleLogin() {
-    console.log('Login pokušaj:',{
-        email: email.value,
-        password: password.value,
-    })
+async function handleLogin() {
+  authStore.clearError()
+
+  try {
+    await authStore.loginUser(
+      email.value,
+      password.value,
+    )
+
+    router.push('/dashboard')
+  } catch {
+    // Poruka se prikazuje preko authStore.error.
+  }
 }
 </script>
 
@@ -34,6 +52,13 @@ function handleLogin() {
         </p>
       </div>
 
+      <div
+        v-if="error"
+        class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+      >
+        {{ error }}
+      </div>
+
       <BaseInput
         v-model="email"
         label="Email"
@@ -50,8 +75,11 @@ function handleLogin() {
         required
       />
 
-      <BaseButton type="submit">
-        Prijavi se 
+      <BaseButton 
+        type="submit"
+        :disabled="loading"
+      >
+        {{ loading ? 'Prijava...' : 'Prijavi se' }} 
       </BaseButton>
 
       <p class="text-center text-sm text-gray-600">

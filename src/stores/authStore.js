@@ -105,6 +105,74 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async loginUser(email, password) {
+        this.loading = true
+        this.error = null
+
+        try {
+            const userCredential =
+            await auth.signInWithEmailAndPassword(
+                email,
+                password,
+            )
+
+            this.user = userCredential.user
+
+            await this.loadUserProfile(
+                userCredential.user.uid,
+            )
+
+            return userCredential.user
+        } catch (error) {
+            console.error(
+                'Greška kod prijave:',
+            error,
+            )
+
+            if (error.code === 'auth/user-not-found') {
+            this.error =
+                'Korisnik s ovom email adresom ne postoji.'
+            } else if (error.code === 'auth/wrong-password') {
+            this.error =
+                'Lozinka nije ispravna.'
+            } else if (error.code === 'auth/invalid-email') {
+            this.error =
+                'Email adresa nije ispravna.'
+            } else {
+            this.error =
+                'Došlo je do greške pri prijavi.'
+            }
+
+            throw error
+        } finally {
+            this.loading = false
+        }
+        },
+
+        async logoutUser() {
+        this.loading = true
+        this.error = null
+
+        try {
+            await auth.signOut()
+
+            this.user = null
+            this.userProfile = null
+        } catch (error) {
+            console.error(
+            'Greška pri odjavi:',
+            error,
+            )
+
+            this.error =
+            'Došlo je do greške pri odjavi.'
+
+            throw error
+        } finally {
+            this.loading = false
+        }
+        },
+
     async loadUserProfile(userId) {
       try {
         const userDocument = await db
