@@ -59,7 +59,7 @@ defineEmits(['update:modelValue'])
           : 'border-gray-300 focus:border-blue-500'
       "
       @input="$emit('update:modelValue', $event.target.value)"
-    />
+    >
 
     <p
       v-if="error"

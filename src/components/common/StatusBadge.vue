@@ -30,5 +30,4 @@ defineProps({
       Visoko
     </template>
   </span>
-
 </template>

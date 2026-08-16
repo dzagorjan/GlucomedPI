@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen items-center justify-center bg-slate-50">
+  <div class="flex min-h-screen items-center justify-center bg-slate-50">
     <div class="flex flex-col items-center gap-6">
       <h1 class="text-4xl font-bold text-blue-600">
         GlucoMed
@@ -15,8 +15,7 @@
         Test
       </button>
     </div>
-  </div>  
-
+  </div>
 </template>
 
 

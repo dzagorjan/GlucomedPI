@@ -9,5 +9,4 @@
   >
     GlucoMed 2026
   </footer>
-
 </template>

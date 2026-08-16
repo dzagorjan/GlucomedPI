@@ -18,7 +18,6 @@
 </script>
 
 <template>
-
   <button
     :type="type"
     :disabled="disabled"
