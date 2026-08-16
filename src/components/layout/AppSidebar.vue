@@ -1,6 +1,7 @@
 <script setup>
+import { useAuthStore } from '@/stores/authStore'
 
-
+const authStore = useAuthStore()
 </script>
 
 
@@ -17,19 +18,30 @@
         Nadzorna ploča
       </RouterLink>
 
-      <RouterLink
-        to="/glucose"
-        class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
-      >
-        Mjerenja glukoze
-      </RouterLink>
+      <template v-if="authStore.isPatient">
+        <RouterLink
+          to="/glucose"
+          class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Mjerenja glukoze
+        </RouterLink>
 
-      <RouterLink
-        to="/statistics"
-        class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
-      >
-        Statistika
-      </RouterLink>
+        <RouterLink
+          to="/statistics"
+          class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Statistika
+        </RouterLink>
+      </template>
+
+      <template v-if="authStore.isDoctor">
+        <RouterLink
+          to="/patients"
+          class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Moji pacijenti
+        </RouterLink>  
+      </template>     
 
       <RouterLink
         to="/profile"
