@@ -1,6 +1,7 @@
 <script setup>
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import StatisticCard from '@/components/dashboard/StatisticCard.vue'
+import RecentMeasurements from '@/components/dashboard/RecentMeasurements.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const authStore = useAuthStore()
@@ -12,6 +13,37 @@ const patientStatistics = {
   measurementsToday: 4,
   targetRange: '4.0 - 10.0',
 }
+// demo podaci
+const recentMeasurements = [
+  {
+    id: 1,
+    value: 6.4,
+    unit: 'mmol/L',
+    measuredAt: 'Danas, 08:15',
+    measurementType: 'Prije doručka',
+  },
+  {
+    id: 2,
+    value: 8.2,
+    unit: 'mmol/L',
+    measuredAt: 'Jučer, 19:30',
+    measurementType: 'Nakon večere',
+  },
+  {
+    id: 3,
+    value: 3.7,
+    unit: 'mmol/L',
+    measuredAt: 'Jučer, 15:10',
+    measurementType: 'Nakon aktivnosti',
+  },
+  {
+    id: 4,
+    value: 11.3,
+    unit: 'mmol/L',
+    measuredAt: 'Jučer, 12:45',
+    measurementType: 'Nakon ručka',
+  },
+]
 </script>
 
 
@@ -69,6 +101,10 @@ const patientStatistics = {
             description="mmol/L"
           />
         </div>
+
+        <RecentMeasurements
+          :measurements="recentMeasurements"
+        />
 
         <div
           class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
