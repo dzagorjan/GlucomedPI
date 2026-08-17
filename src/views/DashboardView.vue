@@ -1,21 +1,22 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import StatisticCard from '@/components/dashboard/StatisticCard.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const authStore = useAuthStore()
 
-const {
-  user,
-  userProfile,
-} = storeToRefs(authStore)
-
+// privremeni podaci
+const patientStatistics = {
+  lastGlucose: '6.4 mmol/L',
+  averageGlucose: '6.8 mmol/L',
+  measurementsToday: 4,
+  targetRange: '4.0 - 10.0',
+}
 </script>
 
 
 <template>
-  <DashboardLayout>
+ <DashboardLayout>
     <div class="flex flex-col gap-6">
       <div>
         <h1 class="text-3xl font-bold text-gray-800">
@@ -23,71 +24,100 @@ const {
         </h1>
 
         <p class="mt-2 text-gray-500">
-          Dobrodošli u GlucoMed.
+          Dobrodošli,
+          {{ authStore.fullName || 'korisniče' }}.
         </p>
       </div>
 
-    
-      <div
-        class="rounded-xl border border-gray-200 bg-white p-6"
-      >
-        <h2 class="text-lg font-semibold text-gray-800">
-          Status korisnika
-        </h2>
+      <!-- Nadzrona ploča - za pacijenta -->
+      <template v-if="authStore.isPatient">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">
+            Pregled glukoze
+          </h2>
 
-        <div class="mt-4 flex items-center gap-3">
-          <span
-            class="h-3 w-3 rounded-full"
-            :class="
-              user
-                ? 'bg-green-500'
-                : 'bg-gray-400'
-            "
-          />
-
-          <span
-            v-if="user"
-            class="text-sm text-green-700"
-          >
-            Korisnik je prijavljen
-          </span>
-
-          <span
-            v-else
-            class="text-sm text-gray-500"
-          >
-            Korisnik trenutno nije prijavljen
-          </span>
+          <p class="mt-1 text-sm text-gray-500">
+            Kratki pregled vaših posljednjih mjerenja.
+          </p>
         </div>
 
         <div
-          v-if="userProfile"
-          class="mt-4 border-t border-gray-100 pt-4"
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
         >
-          <p class="text-sm text-gray-600">
-            {{ authStore.fullName }}
-          </p>
+          <StatisticCard
+            title="Zadnja glukoza"
+            :value="patientStatistics.lastGlucose"
+            description="U ciljanom rasponu"
+            status="success"
+          />
 
-          <p class="mt-1 text-sm text-gray-500">
-            Uloga:
-            {{ authStore.isDoctor ? 'Liječnik' : 'Pacijent' }}
-          </p>
+          <StatisticCard
+            title="Prosjek 7 dana"
+            :value="patientStatistics.averageGlucose"
+            description="Prosječna vrijednost"
+          />
+
+          <StatisticCard
+            title="Mjerenja danas"
+            :value="patientStatistics.measurementsToday"
+            description="Ukupno mjerenja"
+          />
+
+          <StatisticCard
+            title="Ciljani raspon"
+            :value="patientStatistics.targetRange"
+            description="mmol/L"
+          />
         </div>
-      </div>
 
+        <div
+          class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+        >
+          <div
+            class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div>
+              <h2 class="text-lg font-semibold text-gray-800">
+                Brze radnje
+              </h2>
 
+              <p class="mt-1 text-sm text-gray-500">
+                Brzi pristup najčešćim funkcijama.
+              </p>
+            </div>
 
-      <div
-        class="rounded-xl border border-gray-200 bg-white p-6"
-      >
-        <h2 class="text-lg font-semibold">
-          Pregled zdravstvenih podataka
-        </h2>
+            <RouterLink
+              to="/glucose"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-blue-700"
+            >
+              Pregledaj mjerenja
+            </RouterLink>
+          </div>
+        </div>
+      </template>
 
-        <p class="mt-2 text-sm text-gray-500">
-          Ovdje će se prikazivati vaša mjerenja i statistika.
-        </p>
-      </div>
+      <!-- Nadzorna ploča - za liječnika -->
+      <template v-else-if="authStore.isDoctor">
+        <div
+          class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+        >
+          <h2 class="text-lg font-semibold text-gray-800">
+            Liječnička nadzorna ploča
+          </h2>
+
+          <p class="mt-2 text-sm text-gray-500">
+            Ovdje će se prikazivati pregled vaših
+            pacijenata i njihovih mjerenja.
+          </p>
+
+          <RouterLink
+            to="/patients"
+            class="mt-5 inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+          >
+            Pregledaj pacijente
+          </RouterLink>
+        </div>
+      </template>
     </div>
   </DashboardLayout>
 </template>
