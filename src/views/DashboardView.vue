@@ -1,54 +1,51 @@
 <script setup>
+import { computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import StatisticCard from '@/components/dashboard/StatisticCard.vue'
 import RecentMeasurements from '@/components/dashboard/RecentMeasurements.vue'
+
 import { useAuthStore } from '@/stores/authStore'
+import { useGlucoseStore } from '@/stores/glucoseStore'
 
 const authStore = useAuthStore()
+const glucoseStore = useGlucoseStore()
 
-// privremeni podaci
+const {
+  sortedReadings,
+  latestReading,
+} = storeToRefs(glucoseStore)
+
 const patientStatistics = {
-  lastGlucose: '6.4 mmol/L',
   averageGlucose: '6.8 mmol/L',
   measurementsToday: 4,
   targetRange: '4.0 - 10.0',
 }
-// demo podaci
-const recentMeasurements = [
-  {
-    id: 1,
-    value: 6.4,
-    unit: 'mmol/L',
-    measuredAt: 'Danas, 08:15',
-    measurementType: 'Prije doručka',
-  },
-  {
-    id: 2,
-    value: 8.2,
-    unit: 'mmol/L',
-    measuredAt: 'Jučer, 19:30',
-    measurementType: 'Nakon večere',
-  },
-  {
-    id: 3,
-    value: 3.7,
-    unit: 'mmol/L',
-    measuredAt: 'Jučer, 15:10',
-    measurementType: 'Nakon aktivnosti',
-  },
-  {
-    id: 4,
-    value: 11.3,
-    unit: 'mmol/L',
-    measuredAt: 'Jučer, 12:45',
-    measurementType: 'Nakon ručka',
-  },
-]
+
+const latestGlucoseValue = computed(() => {
+  if (!latestReading.value) {
+    return 'Nema podataka'
+  }
+
+  return `${latestReading.value.value} ${latestReading.value.unit}`
+})
+
+onMounted(async () => {
+  if (
+    authStore.isPatient &&
+    authStore.user
+  ) {
+    await glucoseStore.fetchReadings(
+      authStore.user.uid,
+    )
+  }
+})
 </script>
 
 
 <template>
- <DashboardLayout>
+  <DashboardLayout>
     <div class="flex flex-col gap-6">
       <div>
         <h1 class="text-3xl font-bold text-gray-800">
@@ -78,9 +75,17 @@ const recentMeasurements = [
         >
           <StatisticCard
             title="Zadnja glukoza"
-            :value="patientStatistics.lastGlucose"
-            description="U ciljanom rasponu"
-            status="success"
+            :value="latestGlucoseValue"
+            :description="
+              latestReading
+                ? 'Posljednje evidentirano mjerenje'
+                : 'Još nema evidentiranih mjerenja'
+            "
+            :status="
+              latestReading
+                ? 'success'
+                : 'default'
+            "
           />
 
           <StatisticCard
@@ -102,8 +107,25 @@ const recentMeasurements = [
           />
         </div>
 
+        <div
+          v-if="glucoseStore.error"
+          class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+        >
+          {{ glucoseStore.error }}
+        </div>
+
+        <div
+          v-if="glucoseStore.loading"
+          class="rounded-xl border border-gray-200 bg-white p-8 text-center"
+        >
+          <p class="text-sm text-gray-500">
+            Učitavanje mjerenja...
+          </p>
+        </div>
+
         <RecentMeasurements
-          :measurements="recentMeasurements"
+          v-else
+          :measurements="sortedReadings.slice(0, 5)"
         />
 
         <div

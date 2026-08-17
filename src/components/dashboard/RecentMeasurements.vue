@@ -1,4 +1,6 @@
 <script setup>
+import { formatDateTime } from '@/utils/dateUtils'
+
 defineProps({
   measurements: {
     type: Array,
@@ -25,6 +27,17 @@ function getStatus(value) {
     label: 'U rasponu',
     classes: 'bg-green-100 text-green-700',
   }
+}
+
+function getMeasurementTypeLabel(type) {
+    const labels = {
+        before_meal: 'Prije obroka',
+        after_meal: 'Nakon obroka',
+        before_sleep: 'Prije spavanja',
+        after_activity: 'Nakon aktivnosti',
+        other: 'Ostalo',
+    }
+    return labels[type] || type   
 }
 </script>
 
@@ -112,11 +125,11 @@ function getStatus(value) {
             </td>
 
             <td class="px-6 py-4 text-sm text-gray-600">
-              {{ measurement.measuredAt }}
+              {{ formatDateTime(measurement.memeasuredAtDate) }}
             </td>
 
             <td class="px-6 py-4 text-sm text-gray-600">
-              {{ measurement.measurementType }}
+              {{ getMeasurementTypeLabel(measurement.measurementType) }}
             </td>
 
             <td class="px-6 py-4">
