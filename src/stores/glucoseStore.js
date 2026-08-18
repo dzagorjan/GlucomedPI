@@ -106,6 +106,29 @@ export const useGlucoseStore = defineStore('glucose', {
     }
     },
 
+    async deleteReading(readingId, userId) {
+        this.loading = true
+        this.error = null
+
+        try {
+            await db
+            .collection('glucoseReadings')
+            .doc(readingId)
+            .delete()
+
+            await this.fetchReadings(userId)
+        } catch (error) {
+            console.error(
+            'Greška kod brisanja mjerenja:',
+            error,
+            )
+
+            this.error = 'Greška kod brisanja mjerenja.'
+        } finally {
+            this.loading = false
+        }
+        },
+
 
     clearReadings() {
       this.readings = []

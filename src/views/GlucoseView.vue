@@ -47,6 +47,22 @@ function getStatus(value) {
 
   return 'U rasponu'
 }
+
+async function deleteReading(readingId) {
+  const confirmed = confirm(
+    'Želite li obrisati ovo mjerenje?',
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  await glucoseStore.deleteReading(
+    readingId,
+    authStore.user.uid,
+  )
+}
+
 </script>
 
 <template>
@@ -120,6 +136,10 @@ function getStatus(value) {
               <th class="p-4">
                 Napomena
               </th>
+
+              <th class="p-4">
+                Akcije
+              </th>
             </tr>
           </thead>
 
@@ -171,6 +191,17 @@ function getStatus(value) {
               <td class="p-4">
                 {{ reading.note || '-' }}
               </td>
+
+              <td class="p-4">
+                <button
+                  type="button"
+                  class="rounded bg-red-500 px-3 py-1 text-sm text-white"
+                  @click="deleteReading(reading.id)"
+                >
+                  Obriši
+                </button>
+              </td>
+
             </tr>
           </tbody>
         </table>
