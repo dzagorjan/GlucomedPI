@@ -96,6 +96,17 @@ const router = createRouter({
             },
         },
 
+        {
+            path: '/glucose/edit/:id',
+            name: 'glucose-edit',
+            component: () =>
+                import('@/views/GlucoseEditView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
 
     ],
 })

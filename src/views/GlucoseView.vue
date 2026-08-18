@@ -193,13 +193,22 @@ async function deleteReading(readingId) {
               </td>
 
               <td class="p-4">
-                <button
-                  type="button"
-                  class="rounded bg-red-500 px-3 py-1 text-sm text-white"
-                  @click="deleteReading(reading.id)"
-                >
-                  Obriši
-                </button>
+                  <div class="flex gap-2">
+                    <RouterLink
+                      :to="`/glucose/edit/${reading.id}`"
+                      class="rounded bg-blue-500 px-3 py-1 text-sm text-white"
+                    >
+                      Uredi
+                    </RouterLink>
+
+                    <button
+                      type="button"
+                      class="rounded bg-red-500 px-3 py-1 text-sm text-white"
+                      @click="deleteReading(reading.id)"
+                    >
+                      Obriši
+                    </button>
+                  </div>
               </td>
 
             </tr>

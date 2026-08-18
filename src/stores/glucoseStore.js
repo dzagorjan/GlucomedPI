@@ -27,6 +27,14 @@ export const useGlucoseStore = defineStore('glucose', {
     readingCount: (state) => {
       return state.readings.length
     },
+
+    getReadingById: (state) => {
+        return (readingId) => {
+            return state.readings.find(
+                (reading) => reading.id === readingId,
+            )
+        }
+    },
   },
 
   actions: {
@@ -34,6 +42,7 @@ export const useGlucoseStore = defineStore('glucose', {
       this.error = null
     },
 
+    //READ
     async fetchReadings(userId) {
       if (!userId) {
         this.readings = []
@@ -76,6 +85,7 @@ export const useGlucoseStore = defineStore('glucose', {
       }
     },
 
+    //CREATE
     async addReading(data) {
     this.loading = true
     this.error = null
@@ -106,6 +116,37 @@ export const useGlucoseStore = defineStore('glucose', {
     }
     },
 
+    //UPDATE
+    async updateReading(readingId, data) {
+        this.loading = true
+        this.error = null
+
+        try {
+            await db
+            .collection('glucoseReadings')
+            .doc(readingId)
+            .update({
+                value: Number(data.value),
+                unit: data.unit,
+                measurementType: data.measurementType,
+                measuredAt: new Date(data.measuredAt),
+                note: data.note,
+            })
+
+                await this.fetchReadings(data.userId)
+        } catch (error) {
+            console.error(
+            'Greška kod uređivanja mjerenja:',
+            error,
+            )
+
+            this.error = 'Greška kod uređivanja mjerenja.'
+        } finally {
+            this.loading = false
+        }
+    },
+
+    //DELETE
     async deleteReading(readingId, userId) {
         this.loading = true
         this.error = null
@@ -127,8 +168,7 @@ export const useGlucoseStore = defineStore('glucose', {
         } finally {
             this.loading = false
         }
-        },
-
+    },
 
     clearReadings() {
       this.readings = []
