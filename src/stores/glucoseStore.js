@@ -76,6 +76,37 @@ export const useGlucoseStore = defineStore('glucose', {
       }
     },
 
+    async addReading(data) {
+    this.loading = true
+    this.error = null
+
+    try {
+        await db
+        .collection('glucoseReadings')
+        .add({
+            userId: data.userId,
+            value: Number(data.value),
+            unit: data.unit,
+            measurementType: data.measurementType,
+            measuredAt: new Date(data.measuredAt),
+            note: data.note,
+            createdAt: new Date(),
+        })
+
+        await this.fetchReadings(data.userId)
+    } catch (error) {
+        console.error(
+        'Greška kod spremanja mjerenja:',
+        error,
+        )
+
+        this.error = 'Greška kod spremanja mjerenja.'
+    } finally {
+        this.loading = false
+    }
+    },
+
+
     clearReadings() {
       this.readings = []
       this.error = null

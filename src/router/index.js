@@ -86,6 +86,17 @@ const router = createRouter({
             },
         },
 
+        {
+            path: '/glucose/add',
+            name: 'glucose-add',
+            component: () => import('@/views/GlucoseFormView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
+
     ],
 })
 
