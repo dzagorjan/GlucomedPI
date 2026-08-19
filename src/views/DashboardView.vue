@@ -17,18 +17,46 @@ const {
   latestReading,
 } = storeToRefs(glucoseStore)
 
-const patientStatistics = {
-  averageGlucose: '6.8 mmol/L',
-  measurementsToday: 4,
-  targetRange: '4.0 - 10.0',
-}
-
 const latestGlucoseValue = computed(() => {
   if (!latestReading.value) {
     return 'Nema podataka'
   }
 
   return `${latestReading.value.value} ${latestReading.value.unit}`
+})
+
+const averageGlucose = computed(() => {
+  if (sortedReadings.value.length === 0) {
+    return 'Nema podataka'
+  }
+
+  const total = sortedReadings.value.reduce(
+    (sum, reading) => sum + Number(reading.value),
+    0,
+  )
+
+  const average =
+    total / sortedReadings.value.length
+
+  return `${average.toFixed(1)} mmol/L`
+})
+
+const measurementsToday = computed(() => {
+  const today = new Date()
+
+  return sortedReadings.value.filter((reading) => {
+    const date = reading.measuredAtDate
+
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    )
+  }).length
+})
+
+const totalMeasurements = computed(() => {
+  return sortedReadings.value.length
 })
 
 onMounted(async () => {
@@ -89,21 +117,21 @@ onMounted(async () => {
           />
 
           <StatisticCard
-            title="Prosjek 7 dana"
-            :value="patientStatistics.averageGlucose"
-            description="Prosječna vrijednost"
+            title="Prosječna glukoza"
+            :value="averageGlucose"
+            description="Prosjek svih mjerenja"
           />
 
           <StatisticCard
             title="Mjerenja danas"
-            :value="patientStatistics.measurementsToday"
-            description="Ukupno mjerenja"
+            :value="measurementsToday"
+            description="Broj današnjih mjerenja"
           />
 
           <StatisticCard
-            title="Ciljani raspon"
-            :value="patientStatistics.targetRange"
-            description="mmol/L"
+            title="Ukupno mjerenja"
+            :value="totalMeasurements"
+            description="Sva evidentirana mjerenja"
           />
         </div>
 
