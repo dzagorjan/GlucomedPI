@@ -27,6 +27,13 @@ const authStore = useAuthStore()
         </RouterLink>
 
         <RouterLink
+          to="/medications"
+          class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Lijekovi i terapija
+        </RouterLink>
+
+        <RouterLink
           to="/statistics"
           class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
         >

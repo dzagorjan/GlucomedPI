@@ -107,6 +107,17 @@ const router = createRouter({
             },
         },
 
+        {
+            path: '/medications',
+            name: 'medications',
+            component: () =>
+                import('@/views/MedicationsView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
 
     ],
 })
