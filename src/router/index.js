@@ -118,6 +118,17 @@ const router = createRouter({
             },
         },
 
+        {
+            path: '/meals',
+            name: 'meals',
+            component: () =>
+                import('@/views/MealsView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
 
     ],
 })
