@@ -41,6 +41,13 @@ const authStore = useAuthStore()
         </RouterLink>
 
         <RouterLink
+          to="/activities"
+          class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
+        >
+          Fizičke aktivnosti
+        </RouterLink>
+
+        <RouterLink
           to="/statistics"
           class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
         >

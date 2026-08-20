@@ -129,6 +129,17 @@ const router = createRouter({
             },
         },
 
+        {
+            path: '/activities',
+            name: 'activities',
+            component: () =>
+                import('@/views/ActivitiesView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
 
     ],
 })

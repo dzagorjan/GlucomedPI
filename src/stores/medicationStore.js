@@ -58,6 +58,7 @@ export const useMedicationStore = defineStore(
         this.error = null
 
         try {
+            
           await db
             .collection('medications')
             .add({
