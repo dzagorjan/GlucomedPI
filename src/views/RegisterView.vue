@@ -54,7 +54,7 @@ async function handleRegister() {
 
     router.push('/dashboard')
   } catch {
-    
+    //
   }
 }
 </script>

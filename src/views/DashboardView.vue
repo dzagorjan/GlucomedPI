@@ -82,7 +82,7 @@ onMounted(async () => {
 
         <p class="mt-2 text-gray-500">
           Dobrodošli,
-          {{ authStore.fullName || 'korisniče' }}.
+          {{ authStore.fullName || 'korisnik' }}.
         </p>
       </div>
 
@@ -192,8 +192,7 @@ onMounted(async () => {
           </h2>
 
           <p class="mt-2 text-sm text-gray-500">
-            Ovdje će se prikazivati pregled vaših
-            pacijenata i njihovih mjerenja.
+            Pregled pacijenata
           </p>
 
           <RouterLink

@@ -12,11 +12,10 @@ async function handleLogout() {
 
     router.push('/login')
   } catch {
-   
+    //
   }
 }
 </script>
-
 
 
 <template>

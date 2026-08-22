@@ -5,7 +5,6 @@ const authStore = useAuthStore()
 </script>
 
 
-
 <template>
   <aside
     class="w-60 border-r border-gray-200 bg-white p-4"
@@ -59,10 +58,9 @@ const authStore = useAuthStore()
         <RouterLink
           to="/patients"
           class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
-           >
+        >
           Moji pacijenti
-        </RouterLink>  
-        
+        </RouterLink>
       </template>     
 
       <RouterLink

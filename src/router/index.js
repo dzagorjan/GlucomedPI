@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
 
-import HomeView from "@/views/HomeView.vue"
 import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
@@ -10,7 +9,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component:HomeView,
+            component:() => import('@/views/HomeView.vue'),
         },
 
         {
@@ -34,6 +33,27 @@ const router = createRouter({
             component: () => import('@/views/GlucoseView.vue'),
             meta: {
                 requiresAuth:true,
+                roles: ['patient'],
+            },
+        },
+
+        {
+            path: '/glucose/add',
+            name: 'glucose-add',
+            component: () => import('@/views/GlucoseFormView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['patient'],
+            },
+        },
+
+        {
+            path: '/glucose/edit/:id',
+            name: 'glucose-edit',
+            component: () =>
+                import('@/views/GlucoseEditView.vue'),
+            meta: {
+                requiresAuth: true,
                 roles: ['patient'],
             },
         },
@@ -97,28 +117,6 @@ const router = createRouter({
             },
         },
 
-
-        {
-            path: '/glucose/add',
-            name: 'glucose-add',
-            component: () => import('@/views/GlucoseFormView.vue'),
-            meta: {
-                requiresAuth: true,
-                roles: ['patient'],
-            },
-        },
-
-        {
-            path: '/glucose/edit/:id',
-            name: 'glucose-edit',
-            component: () =>
-                import('@/views/GlucoseEditView.vue'),
-            meta: {
-                requiresAuth: true,
-                roles: ['patient'],
-            },
-        },
-
         {
             path: '/medications',
             name: 'medications',
@@ -151,7 +149,6 @@ const router = createRouter({
                 roles: ['patient'],
             },
         },
-
 
     ],
 })

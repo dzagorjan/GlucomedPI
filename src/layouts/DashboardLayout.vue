@@ -1,7 +1,6 @@
 <script setup>
 import AppNavbar from '@/components/layout/AppNavbar.vue'
 import AppSidebar from '@/components/layout/AppSidebar.vue'
-import AppFooter from '@/components/layout/AppFooter.vue'
 
 </script>
 

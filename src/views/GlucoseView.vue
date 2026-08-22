@@ -210,7 +210,6 @@ async function deleteReading(readingId) {
                   </button>
                 </div>
               </td>
-
             </tr>
           </tbody>
         </table>

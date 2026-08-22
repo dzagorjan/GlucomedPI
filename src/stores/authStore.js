@@ -147,9 +147,9 @@ export const useAuthStore = defineStore('auth', {
         } finally {
             this.loading = false
         }
-        },
+    },
 
-        async logoutUser() {
+    async logoutUser() {
         this.loading = true
         this.error = null
 
@@ -171,7 +171,7 @@ export const useAuthStore = defineStore('auth', {
         } finally {
             this.loading = false
         }
-        },
+    },
 
     async loadUserProfile(userId) {
       try {
