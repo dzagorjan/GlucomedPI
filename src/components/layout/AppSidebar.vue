@@ -59,9 +59,10 @@ const authStore = useAuthStore()
         <RouterLink
           to="/patients"
           class="rounded-lg px-4 py-3 hover:bg-blue-50 hover:text-blue-600"
-        >
+           >
           Moji pacijenti
         </RouterLink>  
+        
       </template>     
 
       <RouterLink

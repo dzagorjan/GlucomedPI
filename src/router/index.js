@@ -87,6 +87,18 @@ const router = createRouter({
         },
 
         {
+            path: '/patients/:id',
+            name: 'patient-details',
+            component: () =>
+                import('@/views/PatientDetailsView.vue'),
+            meta: {
+                requiresAuth: true,
+                roles: ['doctor'],
+            },
+        },
+
+
+        {
             path: '/glucose/add',
             name: 'glucose-add',
             component: () => import('@/views/GlucoseFormView.vue'),
