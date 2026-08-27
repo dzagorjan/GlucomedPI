@@ -125,7 +125,7 @@ function getMeasurementTypeLabel(type) {
             </td>
 
             <td class="px-6 py-4 text-sm text-gray-600">
-              {{ formatDateTime(measurement.memeasuredAtDate) }}
+              {{ formatDateTime(measurement.measuredAtDate) }}
             </td>
 
             <td class="px-6 py-4 text-sm text-gray-600">
