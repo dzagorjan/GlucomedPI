@@ -1,38 +1,55 @@
-# GlucomedPI
+## GlucoMed
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+### Autor/Tim: 
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Tim: 338/25
+- Član: Domagoj Zagorjan
 
-## Recommended Browser Setup
+### [Fakultet informatike u Puli](https://fipu.unipu.hr)
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-## Customize configuration
+### Kolegij: 
+- [Programsko inženjerstvo](https://ntankovic.unipu.hr/pi)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Mentor: 
+- [doc. dr. sc. Nikola Tanković](https://ntankovic.unipu.hr)
 
-## Project Setup
+## Opis funkcionalnosti
 
-```sh
-npm install
-```
+GlucoMed je web aplikacija namijenjena osobama koje boluju od dijabetesa i liječnicima koji žele pratiti zdravstvene podatke svojih pacijenata.
 
-### Compile and Hot-Reload for Development
+Glavne funkcionalnosti aplikacije:
+- registracija i prijava korisnika uz podjelu na uloge pacijenta i liječnika
+- unos, pregled, uređivanje i brisanje mjerenja glukoze
+- evidencija lijekova i terapije
+- evidencija prehrane i unosa ugljikohidrata
+- evidencija fizičkih aktivnosti
+- nadzorna ploča s pregledom najvažnijih podataka
+- statistički i grafički prikaz mjerenja glukoze kroz vrijeme
+- pregled pacijenata povezanih s liječnikom
+- liječnički pregled mjerenja glukoze, lijekova, prehrane i aktivnosti odabranog pacijenta
+- prikaz korisničkog profila
 
-```sh
-npm run dev
-```
+Aplikacija je izrađena korištenjem Vue.js-a i JavaScripta, Pinije za upravljanje stanjem, Vue Routera za navigaciju, Tailwind CSS-a za korisničko sučelje te Firebase Authenticationa i Cloud Firestorea za autentifikaciju i pohranu podataka.
 
-### Compile and Minify for Production
 
-```sh
-npm run build
-```
+## Prototip: 
+
+https://www.figma.com/proto/qtqJTxoMFuJnYiqcRNnx5f/Glucomed?node-id=5-33&p=f&viewport=103%2C63%2C0.35&t=ONIJH2k4jUwxcDb2-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=5%3A33&page-id=0%3A1
+
+
+## Zaduženja po članu tima
+
+### Domagoj Zagorjan
+
+Projekt je izrađen samostalno.
+- definiranje ideje, zahtjeva i funkcionalnosti aplikacije
+- izrada strukture i dizajna korisničkog sučelja
+- razvoj Vue komponenti i prikaza
+- implementacija navigacije pomoću Vue Routera
+- implementacija upravljanja stanjem pomoću Pinije
+- testiranje i ispravljanje funkcionalnosti aplikacije
+- izrada UML dijagrama, Figma prototipa i projektne dokumentacije
+- postavljanje i testiranje produkcijske verzije aplikacije
+
